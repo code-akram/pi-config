@@ -1,0 +1,22 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["answer", "sources", "limitations"],
+  "properties": {
+    "answer": {"type": "string"},
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["url", "title", "excerpt"],
+        "properties": {
+          "url": {"type": "string"},
+          "title": {"type": "string"},
+          "excerpt": {"type": "string"}
+        }
+      }
+    },
+    "limitations": {"type": "array", "items": {"type": "string"}}
+  }
+}

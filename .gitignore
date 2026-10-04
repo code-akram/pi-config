@@ -1,0 +1,24 @@
+# Deny everything by default. Only approved configuration source is tracked.
+/*
+!/.gitignore
+!/README.md
+!/LICENSE
+!/agent/
+/agent/*
+!/agent/extensions/
+!/agent/skills/
+!/agent/themes/
+/agent/extensions/*
+!/agent/extensions/arch-rice/
+/agent/skills/*
+!/agent/skills/codex-web/
+
+# Never track runtime artifacts or secrets within approved directories.
+**/node_modules/
+**/__pycache__/
+**/*.pyc
+**/.env
+**/.env.*
+**/auth.json
+**/*.pem
+**/*.key
