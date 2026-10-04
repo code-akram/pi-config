@@ -1,6 +1,6 @@
 import os from "node:os";
 import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
-import { truncateToWidth, wrapTextWithAnsi } from "@earendil-works/pi-tui";
+import { sliceByColumn, truncateToWidth, visibleWidth, wrapTextWithAnsi } from "@earendil-works/pi-tui";
 import { registerToolRails } from "./tool-rails.ts";
 
 // Theme owns built-in surfaces; this extension owns only the footer.
@@ -34,8 +34,15 @@ export default function archRice(pi: ExtensionAPI) {
         render(width: number): string[] {
           if (width < 1) return [];
           const home = os.homedir();
-          const cwd = ctx.cwd === home ? "~" : ctx.cwd.startsWith(home + "/")
-            ? "~" + ctx.cwd.slice(home.length) : ctx.cwd;
+          let cwd = clean(ctx.cwd === home ? "~" : ctx.cwd.startsWith(home + "/")
+            ? "~" + ctx.cwd.slice(home.length) : ctx.cwd);
+          const parts = cwd.split("/").filter(Boolean);
+          if (parts.length > 2) cwd = "…/" + parts.slice(-2).join("/");
+          const pathWidth = Math.min(40, width);
+          const cwdWidth = visibleWidth(cwd);
+          if (cwdWidth > pathWidth) {
+            cwd = "…" + sliceByColumn(cwd, cwdWidth - pathWidth + 1, pathWidth - 1, true);
+          }
           const branch = footerData.getGitBranch();
           const usage = ctx.getContextUsage();
           const percent = usage?.percent;
