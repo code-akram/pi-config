@@ -1,6 +1,6 @@
 import os from "node:os";
 import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
-import { sliceByColumn, truncateToWidth, visibleWidth, wrapTextWithAnsi } from "@earendil-works/pi-tui";
+import { sliceByColumn, truncateToWidth, visibleWidth } from "@earendil-works/pi-tui";
 import { registerToolRails } from "./tool-rails.ts";
 
 // Theme owns built-in surfaces; this extension owns only the footer.
@@ -8,20 +8,8 @@ export default function archRice(pi: ExtensionAPI) {
   let enabled = true;
   let restoreTheme = "thinking-spectrum";
   registerToolRails(pi, () => enabled);
-  pi.registerMarkdownTransformer((markdown, context) => {
-    if (!enabled || context.messageType !== "user") return markdown;
-    // Hanging indent for ordinary prose, including explicit and soft line wraps.
-    // Keep block Markdown intact rather than turning fences/lists into paragraphs.
-    const anchor = "**❯**";
-    if (/^(?: {0,3}(?:#{1,6}\s|>|[-+*]\s|\d+[.)]\s|`{3}|~{3})| {4}|\t)/m.test(markdown)) {
-      return anchor + "\n\n" + markdown;
-    }
-    const indent = 2; // Chevron + space.
-    if (context.availableWidth <= indent + 1) return anchor + "\n\n" + markdown;
-    return wrapTextWithAnsi(markdown, context.availableWidth - indent)
-      .map((line, i) => (i === 0 ? anchor + " " : "\u200B" + "\u00A0".repeat(indent)) + line)
-      .join("  \n");
-  });
+  // User messages use Pi's native padded background block. Keep their Markdown
+  // untouched: source-level chevrons/indentation interfere with block formatting.
 
   function install(ctx: ExtensionContext) {
     if (ctx.mode !== "tui") return;
