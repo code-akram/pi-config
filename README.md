@@ -1,10 +1,11 @@
 # Pi configuration
 
-Personal themes, a UI extension, and a web-research skill for [Pi](https://pi.dev).
+Personal themes, extensions, and a web-research skill for [Pi](https://pi.dev).
 
 ## Contents
 
 - `agent/extensions/arch-rice/` — custom footer, tool-call rails, and user-message formatting.
+- `agent/extensions/remote-control/` — opt-in Pi-to-Pi messaging through your own Cloudflare Worker and SQLite Durable Object; see its `README.md` for deployment and security.
 - `agent/skills/codex-web/` — public web research through an authenticated Codex CLI; see its `SKILL.md` for requirements and usage.
 - `agent/themes/arch-ice.json` — muted Arch blue / ice palette.
 - `agent/themes/thinking-spectrum.json` — colorful thinking-level palette.

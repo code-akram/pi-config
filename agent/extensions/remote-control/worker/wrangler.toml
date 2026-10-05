@@ -1,0 +1,20 @@
+name = "pi-remote-control"
+main = "src/index.ts"
+compatibility_date = "2026-10-05"
+workers_dev = true
+send_metrics = false
+
+# SQLite-backed DOs work on Workers Free. No D1/KV/R2 bindings are needed.
+[[durable_objects.bindings]]
+name = "RC_RELAY"
+class_name = "RcRelay"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["RcRelay"]
+
+[observability]
+enabled = false
+
+# Set RC_TOKEN using `wrangler secret put RC_TOKEN --config worker/wrangler.toml`.
+# Never put a token, account credentials, or account ID in this file.

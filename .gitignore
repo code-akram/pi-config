@@ -10,6 +10,7 @@
 !/agent/themes/
 /agent/extensions/*
 !/agent/extensions/arch-rice/
+!/agent/extensions/remote-control/
 /agent/skills/*
 !/agent/skills/codex-web/
 
@@ -22,3 +23,8 @@
 **/auth.json
 **/*.pem
 **/*.key
+**/.dev.vars
+**/.dev.vars.*
+**/.wrangler/
+**/.build/
+**/coverage/

@@ -43,11 +43,16 @@ export default function archRice(pi: ExtensionAPI) {
           const filled = percent == null ? 0 : Math.round(Math.max(0, Math.min(100, percent)) / 100 * 8);
           const gauge = theme.fg("accent", "▰".repeat(filled) + "▱".repeat(8 - filled));
           const engine = model + sep + effort + sep + gauge;
-          // Append other extension statuses to the same single-line footer.
-          const statuses = [...footerData.getExtensionStatuses().entries()]
+          // Keep RC on its own row and preserve its connection-state color.
+          const extensionStatuses = footerData.getExtensionStatuses();
+          const rc = extensionStatuses.get("remote-control");
+          const statuses = [...extensionStatuses.entries()]
+            .filter(([key]) => key !== "remote-control")
             .sort(([a], [b]) => a.localeCompare(b))
             .map(([, text]) => theme.fg("accent", clean(text).replace(/\x1b\[[0-9;:]*m/g, "")));
-          return [truncateToWidth([engine, location, ...statuses].filter(Boolean).join(sep), width)];
+          const lines = [truncateToWidth([engine, location, ...statuses].filter(Boolean).join(sep), width)];
+          if (rc) lines.push(truncateToWidth(clean(rc), width));
+          return lines;
         },
       };
     });

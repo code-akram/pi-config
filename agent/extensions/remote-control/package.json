@@ -1,0 +1,31 @@
+{
+  "name": "pi-remote-control-private",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22.19" },
+  "pi": { "extensions": ["./index.ts"] },
+  "scripts": {
+    "check": "tsc --noEmit && tsc --noEmit -p worker/tsconfig.json",
+    "build:worker": "node scripts/build-worker.mjs",
+    "test": "npm run build:worker && node --experimental-strip-types --test tests/*.test.ts",
+    "smoke": "node --experimental-strip-types scripts/smoke.ts",
+    "dev": "wrangler dev --config worker/wrangler.toml",
+    "deploy": "wrangler deploy --config worker/wrangler.toml"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-ai": "*",
+    "@earendil-works/pi-coding-agent": "*",
+    "@earendil-works/pi-tui": "*"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "5.20261005.1",
+    "@earendil-works/pi-ai": "1.0.3",
+    "@earendil-works/pi-coding-agent": "1.0.3",
+    "@earendil-works/pi-tui": "1.0.3",
+    "@types/node": "26.6.4",
+    "miniflare": "5.20261001.0-alpha",
+    "typescript": "6.0.3",
+    "wrangler": "4.147.0"
+  }
+}
